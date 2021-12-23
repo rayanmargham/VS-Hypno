@@ -1,0 +1,465 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Scripts/Menus/Splash.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Menus/Backgrounds/Splash.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Fonts/vcr.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Menus/Music&Sounds/LinuxSplash.wav" type="AudioStream" id=4]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+uniform vec4 bg_color: hint_color;
+
+float rand(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	float size = 100.0;
+	float prob = 0.9;
+	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
+	float color = 0.0;
+	float starValue = rand(pos);
+
+	if (starValue > prob)
+	{
+		vec2 center = size * pos + vec2(size, size) * 0.5;
+		float t = 0.9 + 0.2 * sin(TIME * 8.0 + (starValue - prob) / (1.0 - prob) * 45.0);
+		color = 1.0 - distance(FRAGCOORD.xy, center) / (0.5 * size);
+		color = color * t / (abs(FRAGCOORD.y - center.y)) * t / (abs(FRAGCOORD.x - center.x));
+	}
+	else if (rand(SCREEN_UV.xy / 20.0) > 0.996)
+	{
+		float r = rand(SCREEN_UV.xy);
+		color = r * (0.85 * sin(TIME * (r * 5.0) + 720.0 * r) + 0.95);
+	}
+	COLOR = vec4(vec3(color),1.0) + bg_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/bg_color = Color( 0.141176, 0.00392157, 0.14902, 1 )
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../ColorRect2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../Label:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 700, 285.5 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../Label:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ "" ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../Label:custom_colors/font_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("../Label:rect_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 223, 29 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "Splash"
+length = 8.5
+tracks/0/type = "method"
+tracks/0/path = NodePath("..")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 8.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "transition_to_start"
+} ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Label:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 0.55, 0.6, 0.65, 0.7, 1.603, 2.028, 2.088, 2.118, 2.178, 2.238, 2.291, 3.202, 3.618, 3.678, 3.708, 3.768, 3.828, 3.881, 4.216, 5.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ "", "G", "Go", "God", "Godo", "Godot", "", "G", "Ga", "Gam", "Gami", "Gamin", "Gaming", "", "E", "Ep", "Epi", "Epic", "Epicne", "Epicness", "", "linux" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../Label:custom_colors/font_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.45, 0.5, 0.57, 0.64, 0.71, 0.78, 1, 1.05, 1.587, 1.968, 2.028, 2.118, 2.178, 2.268, 2.328, 2.567, 2.658, 3.177, 3.558, 3.618, 3.708, 3.768, 3.858, 3.918, 4.145, 4.201, 5.437 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.0156863, 0.266667, 1 ), Color( 0, 0.298039, 1, 1 ), Color( 0, 1, 0.623529, 1 ), Color( 0.996078, 0.25098, 0.478431, 1 ), Color( 0.901961, 0.0392157, 0.866667, 1 ), Color( 0.901961, 0.0392157, 0.866667, 1 ), Color( 0, 0.717647, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.0156863, 0.266667, 1 ), Color( 0, 0.298039, 1, 1 ), Color( 0, 1, 0.623529, 1 ), Color( 0.996078, 0.25098, 0.478431, 1 ), Color( 0.901961, 0.0392157, 0.866667, 1 ), Color( 0.901961, 0.0392157, 0.866667, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.0156863, 0.266667, 1 ), Color( 0, 0.298039, 1, 1 ), Color( 0, 1, 0.623529, 1 ), Color( 0.996078, 0.25098, 0.478431, 1 ), Color( 0.901961, 0.0392157, 0.866667, 1 ), Color( 0.901961, 0.0392157, 0.866667, 1 ), Color( 0.219608, 1, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../Label:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 528.5, 345.5 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../ProgressBar:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("../ColorRect:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 6.6, 7.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("../ColorRect2:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 3.95, 4.8, 5.5, 6.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/7/type = "audio"
+tracks/7/path = NodePath("../Splash_Audio")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"clips": [ {
+"end_offset": 2.0,
+"start_offset": 2.0,
+"stream": ExtResource( 4 )
+} ],
+"times": PoolRealArray( 0 )
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("../Label:rect_size")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 223, 29 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "loadend"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Label:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "linux" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Label:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 592.5, 345.5 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../Label:rect_size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 95.0001, 29 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../ProgressBar:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "Switch_To_Into"
+} ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("../Label:custom_colors/font_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("../ColorRect:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "loadstart"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Label:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "linux" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../Label:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 528.5, 345.5 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../Label:rect_size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 223, 29 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../ProgressBar:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "start_load"
+} ]
+}
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 3 )
+
+[node name="Splash" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+material = SubResource( 6 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Splash" type="Sprite" parent="."]
+visible = false
+position = Vector2( 500, 300 )
+scale = Vector2( 0.45, 0.45 )
+texture = ExtResource( 2 )
+
+[node name="Event_Anim" type="AnimationPlayer" parent="Splash"]
+anims/RESET = SubResource( 7 )
+anims/Splash = SubResource( 1 )
+anims/loadend = SubResource( 2 )
+anims/loadstart = SubResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 700.0
+margin_top = 285.5
+margin_right = 923.0
+margin_bottom = 314.5
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -156.0
+margin_top = 73.0
+margin_right = 164.0
+margin_bottom = 95.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Splash_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

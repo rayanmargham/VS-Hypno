@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Characters/AnimatedSpriteCharacter.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Stages/Characters/Bogus/Bogus.res" type="SpriteFrames" id=2]
+
+[node name="Bogus" type="Node2D"]
+scale = Vector2( -1, 1 )
+script = ExtResource( 1 )
+flipX = true
+camOffset = Vector2( 0, -300 )
+characterColor = Color( 1, 1, 1, 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 2 )
+animation = "idle"
+offset = Vector2( 0, -300 )
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
